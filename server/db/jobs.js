@@ -41,3 +41,8 @@ export async function updateJob({ id, title, description }) {
   await getJobTable().update(updatedFields).where({ id });
   return { ...job, ...updatedFields };
 }
+
+export async function getJobsAtCompany(companyId) {
+  const jobs = await getJobTable().select().where({ companyId });
+  return jobs
+}
