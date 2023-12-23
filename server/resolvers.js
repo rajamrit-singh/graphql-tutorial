@@ -1,5 +1,5 @@
 import { getCompany } from './db/companies.js'
-import { getJob, getJobs, getJobsAtCompany } from './db/jobs.js'
+import { createJob, deleteJob, getJob, getJobs, getJobsAtCompany, updateJob } from './db/jobs.js'
 import { GraphQLError } from 'graphql'
 
 export const resolvers = {
@@ -19,6 +19,19 @@ export const resolvers = {
             }
             return company
         }
+    },
+
+    Mutation: {
+        createJob: async (_root, {input: {title, description}}) => {
+            // console.log(args);
+            console.log(title)
+            const companyId = 'FjcJCHJALA4i';
+            const job = await createJob({companyId, title, description});
+            console.log(job);
+            return job
+        },
+        deleteJob: async (_root, { id }) => deleteJob(id),
+        updateJob: async (_root, { input}) => updateJob(input)
     },
 
     Job: {
