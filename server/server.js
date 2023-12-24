@@ -5,6 +5,7 @@ import { ApolloServer } from '@apollo/server';
 import { expressMiddleware as apolloMiddleware } from '@apollo/server/express4';
 import { readFile } from 'node:fs/promises';
 import { resolvers } from './resolvers.js';
+import { getUser } from './db/users.js';
 
 // Defining the port number to be used for the server
 const PORT = 9000;
@@ -30,8 +31,17 @@ const apolloServer = new ApolloServer({
 // Starting the Apollo Server
 await apolloServer.start();
 
+async function getContext({ req }) {
+  if (req.auth) {
+    const user = await getUser(req.auth.sub)
+    return { user }
+  } else {
+    return {}
+  }
+}
+
 // Applying Apollo Server middleware to the express app at the '/graphql' endpoint
-app.use('/graphql', apolloMiddleware(apolloServer));
+app.use('/graphql', apolloMiddleware(apolloServer, { context: getContext }));
 /*
 
 The line app.use('/graphql', apolloMiddleware(apolloServer)); is configuring the Express
