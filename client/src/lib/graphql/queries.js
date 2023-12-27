@@ -32,15 +32,18 @@ export const companyByIdQuery = gql`query CompanyByID($id: ID!) {
   }
 }`
 
-export const jobsQuery = gql`query GetJobs{
-  jobs {
-    id
-    title
-    date
-    company {
+export const jobsQuery = gql`query GetJobs ($limit: Int, $offset: Int){
+  jobs (limit: $limit, offset: $offset) {
+    items {
       id
-      name
+      title
+      date
+      company {
+        id
+        name
+      }
     }
+    totalCount
   }
 }`
 
