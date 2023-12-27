@@ -32,12 +32,12 @@ const apolloServer = new ApolloServer({
 await apolloServer.start();
 
 async function getContext({ req }) {
+  const companyLoader = createCompanyLoader();
+  const context = { companyLoader };
   if (req.auth) {
-    const user = await getUser(req.auth.sub)
-    return { user }
-  } else {
-    return {}
+    context.user = await getUser(req.auth.sub);
   }
+  return context;
 }
 
 // Applying Apollo Server middleware to the express app at the '/graphql' endpoint
