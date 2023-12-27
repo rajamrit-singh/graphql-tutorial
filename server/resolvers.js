@@ -1,4 +1,3 @@
-import { companyLoader, getCompany } from './db/companies.js'
 import { createJob, deleteJob, getJob, getJobs, getJobsAtCompany, updateJob } from './db/jobs.js'
 import { GraphQLError } from 'graphql'
 import { getUser } from './db/users.js';
@@ -56,7 +55,9 @@ export const resolvers = {
 
     Job: {
         date: (job) => job.createdAt.slice(0, 'yyyy-mm-dd'.length),
-        company: async (job) => companyLoader.load(job.companyId)
+        company: (job, _args, { companyLoader }) => {
+            return companyLoader.load(job.companyId);
+        },
     },
     Company: {
         jobs: (company) => getJobsAtCompany(company.id)

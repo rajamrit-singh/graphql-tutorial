@@ -6,6 +6,7 @@ import { expressMiddleware as apolloMiddleware } from '@apollo/server/express4';
 import { readFile } from 'node:fs/promises';
 import { resolvers } from './resolvers.js';
 import { getUser } from './db/users.js';
+import { createCompanyLoader } from './db/companies.js';
 
 // Defining the port number to be used for the server
 const PORT = 9000;
